@@ -29,6 +29,7 @@ favicon.svg
 src/main.js
 src/fluid.js
 src/shaders.js
+src/entrance.js
 ```
 
 The domain and Cloudflare account have not been configured by this project. Connect the public GitHub repository to your preferred static hosting service, then attach the domain through the host's custom-domain settings. Never put Cloudflare credentials in the repository.

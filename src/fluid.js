@@ -28,7 +28,6 @@ export class Fluid {
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     this.resize();
-    this.seed();
   }
 
   compile(fragment) {
@@ -132,15 +131,6 @@ export class Fluid {
     this.velocity.swap();
     this.pass('splat', this.dye.write, { source: this.dye.read, point: [x, y], value: [amount, 0, 0], radius: radius * 1.3 });
     this.dye.swap();
-  }
-
-  seed() {
-    for (let i = 0; i < 20; i++) {
-      const t = i / 19;
-      const side = i % 2 ? 1 : -1;
-      this.splat(0.5 + side * (0.26 - t * 0.19), 0.72 - t * 0.4, side * 22, 16, 0.38, 0.0017);
-    }
-    for (let i = 0; i < 14; i++) this.step(1 / 60);
   }
 
   step(dt) {

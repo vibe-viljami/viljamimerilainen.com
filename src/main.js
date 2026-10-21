@@ -1,4 +1,5 @@
 import { Fluid } from './fluid.js';
+import { entranceSplats } from './entrance.js';
 
 const canvas = document.querySelector('#ink');
 const mark = document.querySelector('.mark');
@@ -21,14 +22,15 @@ function animate(timestamp) {
   const dt = Math.min((timestamp - (last || timestamp - 16)) / 1000, 1 / 30);
   last = timestamp;
   elapsed += dt;
+  for (const point of entranceSplats(elapsed, dt)) fluid.splat(...point);
   for (const point of pending) fluid.splat(...point);
   pending = [];
-  if (elapsed - lastAmbient > 0.22) {
+  if (elapsed > 4.5 && elapsed - lastAmbient > 0.22) {
     lastAmbient = elapsed;
     const t = elapsed * 0.23;
     const side = Math.sin(t * 0.63) > 0 ? 1 : -1;
     const depth = (Math.sin(t) + 1) * 0.5;
-    fluid.splat(0.5 + side * (0.265 - depth * 0.19), 0.73 - depth * 0.38, side * Math.cos(t) * 13, 10, 0.075, 0.00045);
+    fluid.splat(0.5 + side * (0.265 - depth * 0.19), 0.73 - depth * 0.38, side * Math.cos(t) * 9, 7, 0.035, 0.00045);
   }
   fluid.step(dt);
   fluid.render(elapsed);
@@ -39,6 +41,10 @@ function start() {
   stop();
   fluid?.destroy();
   fluid = null;
+  elapsed = 0;
+  lastAmbient = 0;
+  pending = [];
+  previousPointer = null;
   mark.classList.remove('is-ready');
   document.body.classList.toggle('is-static', reducedMotion.matches);
   if (reducedMotion.matches) return;
