@@ -4,6 +4,8 @@ import { readFile } from 'node:fs/promises';
 
 const html = await readFile(new URL('../index.html', import.meta.url), 'utf8');
 const css = await readFile(new URL('../style.css', import.meta.url), 'utf8');
+const shaderSource = await readFile(new URL('../src/shaders.js', import.meta.url), 'utf8');
+const fluidSource = await readFile(new URL('../src/fluid.js', import.meta.url), 'utf8');
 
 test('footer links use lowercase labels and the correct profiles', () => {
   assert.match(html, /href="https:\/\/www.linkedin.com\/in\/viljamimerilainen\/"[^>]*>linkedin<\/a>/);
@@ -26,4 +28,10 @@ test('a still monogram and reduced-motion mode are available', () => {
 
 test('the monogram and social links are the only visible content', () => {
   assert.doesNotMatch(html, /class="signature"|class="invitation"|id="hint"/);
+});
+
+test('glyph rendering preserves antialiased alpha coverage and supersamples', () => {
+  assert.match(shaderSource, /float m = texture\(mask, uv\)\.a;/);
+  assert.doesNotMatch(shaderSource, /float m = texture\(mask, uv\)\.r;/);
+  assert.match(fluidSource, /Math\.max\(2, Math\.min\(devicePixelRatio/);
 });

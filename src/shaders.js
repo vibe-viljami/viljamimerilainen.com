@@ -124,7 +124,9 @@ export const shaders = {
       return n;
     }
     void main() {
-      float m = texture(mask, uv).r;
+      // Glyph coverage lives in alpha. RGB is white even at partial coverage,
+      // so using red turns the antialiased outline into a jagged binary edge.
+      float m = texture(mask, uv).a;
       vec3 bg = vec3(5.0 / 255.0);
       if (m < 0.001) { color = vec4(bg, 1); return; }
       float ink = sampleInk(uv);

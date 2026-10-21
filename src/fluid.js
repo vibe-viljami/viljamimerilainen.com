@@ -107,7 +107,9 @@ export class Fluid {
   }
 
   resize() {
-    const size = Math.max(1, Math.round(this.canvas.clientWidth * Math.min(devicePixelRatio || 1, 3)));
+    // Supersample even on 1x displays; CSS downsamples the final image.
+    const scale = Math.max(2, Math.min(devicePixelRatio || 1, 3));
+    const size = Math.max(1, Math.round(this.canvas.getBoundingClientRect().width * scale));
     this.canvas.width = this.canvas.height = size;
     const mask = document.createElement('canvas');
     mask.width = mask.height = size;
