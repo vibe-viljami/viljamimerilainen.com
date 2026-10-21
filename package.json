@@ -5,6 +5,8 @@
   "type": "module",
   "description": "An interactive ink-in-water monogram for Viljami Meriläinen.",
   "scripts": {
+    "build": "node scripts/build.js",
+    "deploy": "npm run build && npx --yes wrangler@4.151.3 deploy",
     "dev": "node scripts/serve.js",
     "check": "node --check src/main.js && node --check src/fluid.js && node --check src/shaders.js && node --check src/entrance.js && node --check scripts/serve.js",
     "test": "node --test tests/*.test.js"
