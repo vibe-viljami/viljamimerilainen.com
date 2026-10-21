@@ -23,3 +23,7 @@ test('a still monogram and reduced-motion mode are available', () => {
   assert.match(css, /prefers-reduced-motion: reduce/);
   assert.match(html, /<canvas id="ink" aria-hidden="true">/);
 });
+
+test('the monogram and social links are the only visible content', () => {
+  assert.doesNotMatch(html, /class="signature"|class="invitation"|id="hint"/);
+});

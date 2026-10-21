@@ -14,9 +14,9 @@ export class Fluid {
     for (const [name, fragment] of Object.entries(shaders)) this.programs[name] = this.compile(fragment);
     this.vao = gl.createVertexArray();
     gl.bindVertexArray(this.vao);
-    this.size = matchMedia('(pointer: coarse)').matches ? 128 : 192;
+    this.size = matchMedia('(pointer: coarse)').matches ? 192 : 256;
     this.velocity = this.double(this.size);
-    this.dye = this.double(this.size * 2);
+    this.dye = this.double(matchMedia('(pointer: coarse)').matches ? 768 : 1536);
     this.pressure = this.double(this.size);
     this.curl = this.target(this.size);
     this.divergence = this.target(this.size);
@@ -108,7 +108,7 @@ export class Fluid {
   }
 
   resize() {
-    const size = Math.max(1, Math.round(this.canvas.clientWidth * Math.min(devicePixelRatio || 1, 2)));
+    const size = Math.max(1, Math.round(this.canvas.clientWidth * Math.min(devicePixelRatio || 1, 3)));
     this.canvas.width = this.canvas.height = size;
     const mask = document.createElement('canvas');
     mask.width = mask.height = size;
@@ -138,7 +138,7 @@ export class Fluid {
     for (let i = 0; i < 20; i++) {
       const t = i / 19;
       const side = i % 2 ? 1 : -1;
-      this.splat(0.5 + side * (0.26 - t * 0.19), 0.72 - t * 0.4, side * 22, 16, 0.6, 0.0017);
+      this.splat(0.5 + side * (0.26 - t * 0.19), 0.72 - t * 0.4, side * 22, 16, 0.38, 0.0017);
     }
     for (let i = 0; i < 14; i++) this.step(1 / 60);
   }
@@ -164,7 +164,7 @@ export class Fluid {
     this.dye.swap();
   }
 
-  render(time) { this.pass('display', null, { source: this.dye.read, mask: this.mask, time }); }
+  render(time) { this.pass('display', null, { source: this.dye.read, mask: this.mask, texel: [1 / this.dye.read.size, 1 / this.dye.read.size], time }); }
 
   destroy() {
     const gl = this.gl;

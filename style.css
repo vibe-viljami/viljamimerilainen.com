@@ -19,18 +19,6 @@ body { overflow: hidden; }
   isolation: isolate;
 }
 
-.signature {
-  position: absolute;
-  top: max(36px, env(safe-area-inset-top));
-  left: max(40px, env(safe-area-inset-left));
-  font-size: 11px;
-  font-weight: 400;
-  letter-spacing: .025em;
-  color: #8d8c88;
-  z-index: 2;
-  animation: arrive 1.8s ease both;
-}
-
 .mark {
   width: min(82vw, 74svh, 760px);
   aspect-ratio: 1;
@@ -55,29 +43,11 @@ body { overflow: hidden; }
   line-height: 1;
   font-weight: 700;
   background: #f0eee8;
-  background-image: radial-gradient(ellipse at 42% 32%, #141414 0, transparent 24%), radial-gradient(ellipse at 58% 65%, #282828 0, transparent 30%);
+  background-image: radial-gradient(ellipse at 42% 32%, #93918d 0, transparent 24%), radial-gradient(ellipse at 58% 65%, #aaa8a3 0, transparent 30%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
 }
-
-.invitation {
-  position: absolute;
-  bottom: max(86px, calc(env(safe-area-inset-bottom) + 60px));
-  display: flex;
-  align-items: center;
-  gap: 9px;
-  color: #62615e;
-  font-size: 9px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  transition: opacity 1.8s ease;
-  animation: arrive 2s 1s ease both;
-}
-
-.invitation-dot { width: 3px; height: 3px; background: #9c9a94; border-radius: 50%; }
-.has-interacted .invitation { opacity: 0; }
-.is-static .invitation { display: none; }
 
 .social-links {
   position: absolute;
@@ -111,13 +81,10 @@ body { overflow: hidden; }
 @keyframes arrive { from { opacity: 0; } to { opacity: 1; } }
 
 @media (max-width: 600px) {
-  .signature { top: 28px; left: 24px; font-size: 10px; }
-  .invitation { bottom: max(80px, calc(env(safe-area-inset-bottom) + 60px)); }
   .mark { width: min(94vw, 70svh); }
   .fallback { font-size: min(89vw, 66svh); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
-  .invitation { display: none; }
 }

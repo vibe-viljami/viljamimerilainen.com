@@ -105,6 +105,14 @@ export const shaders = {
   display: common + `
     uniform sampler2D mask;
     uniform float time;
+    float sampleInk(vec2 p) {
+      vec2 st = p / texel - 0.5;
+      vec2 i = floor(st);
+      vec2 f = fract(st);
+      vec2 a = (i + 0.5) * texel;
+      return mix(mix(texture(source, a).x, texture(source, a + vec2(texel.x, 0)).x, f.x),
+                 mix(texture(source, a + vec2(0, texel.y)).x, texture(source, a + texel).x, f.x), f.y);
+    }
     float hash(vec2 p) { return fract(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453); }
     float noise(vec2 p) {
       vec2 i = floor(p); vec2 f = fract(p); f = f * f * (3.0 - 2.0 * f);
@@ -119,13 +127,13 @@ export const shaders = {
       float m = texture(mask, uv).r;
       vec3 bg = vec3(5.0 / 255.0);
       if (m < 0.001) { color = vec4(bg, 1); return; }
-      float ink = texture(source, uv).x;
+      float ink = sampleInk(uv);
       vec2 warp = vec2(fbm(uv * 5.0 + time * 0.014), fbm(uv * 5.0 + 8.3 - time * 0.011));
       float cloud = fbm(uv * 7.0 + warp * 3.5);
-      float base = smoothstep(0.47, 0.73, cloud) * 0.66;
-      float darkness = 1.0 - exp(-max(0.0, ink) * 1.5);
-      float brightness = clamp(1.0 - darkness - base * (1.0 - darkness), 0.025, 1.0);
-      float grain = (hash(gl_FragCoord.xy + floor(time * 8.0)) - 0.5) * 0.014;
+      float base = smoothstep(0.47, 0.73, cloud) * 0.22;
+      float darkness = (1.0 - exp(-max(0.0, ink) * 0.85)) * 0.62;
+      float brightness = clamp(1.0 - darkness - base * (1.0 - darkness), 0.32, 1.0);
+      float grain = (hash(gl_FragCoord.xy + floor(time * 8.0)) - 0.5) * 0.005;
       vec3 paper = vec3(0.95, 0.943, 0.924) * brightness + grain;
       color = vec4(mix(bg, paper, m), 1);
     }

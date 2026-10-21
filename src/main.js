@@ -3,8 +3,6 @@ import { Fluid } from './fluid.js';
 const canvas = document.querySelector('#ink');
 const mark = document.querySelector('.mark');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-const coarse = matchMedia('(pointer: coarse)');
-document.querySelector('#hint').textContent = coarse.matches ? 'Touch to stir' : 'Move to stir';
 
 let fluid;
 let frame = 0;
@@ -68,7 +66,7 @@ function stir(event) {
   const prev = previousPointer || point;
   const dx = Math.max(-180, Math.min(180, (x - prev.x) * 2200));
   const dy = Math.max(-180, Math.min(180, (y - prev.y) * 2200));
-  pending.push([x, y, dx, dy, 0.32, 0.0011]);
+  pending.push([x, y, dx, dy, 0.18, 0.0011]);
   if (pending.length > 24) pending.shift();
   previousPointer = point;
   document.body.classList.add('has-interacted');
