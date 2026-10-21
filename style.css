@@ -20,7 +20,7 @@ body { overflow: hidden; }
 }
 
 .mark {
-  width: min(82vw, 74svh, 760px);
+  width: min(65.6vw, 59.2svh, 608px);
   aspect-ratio: 1;
   position: relative;
   user-select: none;
@@ -39,7 +39,7 @@ body { overflow: hidden; }
   display: grid;
   place-items: center;
   font-family: Georgia, "Times New Roman", serif;
-  font-size: min(78vw, 70svh, 720px);
+  font-size: min(62.4vw, 56svh, 576px);
   line-height: 1;
   font-weight: 700;
   background: #f0eee8;
@@ -81,8 +81,8 @@ body { overflow: hidden; }
 @keyframes arrive { from { opacity: 0; } to { opacity: 1; } }
 
 @media (max-width: 600px) {
-  .mark { width: min(94vw, 70svh); }
-  .fallback { font-size: min(89vw, 66svh); }
+  .mark { width: min(75.2vw, 56svh); }
+  .fallback { font-size: min(71.2vw, 52.8svh); }
 }
 
 @media (prefers-reduced-motion: reduce) {
