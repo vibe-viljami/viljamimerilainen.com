@@ -2,7 +2,7 @@
 export function entranceSplats(time, dt) {
   const splats = [];
   for (const side of [-1, 1]) {
-    const progress = (time - (side === -1 ? 0.65 : 1.15)) / 2.6;
+    const progress = (time - (side === -1 ? 0.1 : 0.35)) / 2.6;
     if (progress <= 0 || progress >= 1) continue;
     const envelope = Math.sin(Math.PI * progress) ** 2;
     const depth = progress * 0.48;
